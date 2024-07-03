@@ -1,0 +1,12 @@
+[Unit]
+Description=Telegram Reverse Shell
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/tgsh -s /bin/bash -u <your telegram id>
+Restart=always
+RestartSec=60
+Environment=TGSH_TOKEN=<your bot token>
+
+[Install]
+WantedBy=multi-user.target
