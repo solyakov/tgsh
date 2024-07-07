@@ -26,7 +26,8 @@ func run(request *tgbotapi.Message, shell string, replies chan<- tgbotapi.Messag
 	}
 
 	if len(res) > 4096 {
-		res = res[:4096]
+		t := []byte("\nOutput truncated")
+		res = append(res[:4096-len(t)], t...)
 	}
 
 	msg := tgbotapi.NewMessage(request.Chat.ID, string(res))
