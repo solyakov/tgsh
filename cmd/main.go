@@ -43,10 +43,8 @@ func main() {
 		Debug bool   `long:"debug" short:"d" env:"TGSH_DEBUG" description:"Enable debug mode"`
 	}
 	if _, err := flags.Parse(&opts); err != nil {
-		if flagsErr, ok := err.(*flags.Error); ok {
-			if flagsErr.Type == flags.ErrHelp {
-				return
-			}
+		if flagsErr, ok := err.(*flags.Error); ok && flagsErr.Type == flags.ErrHelp {
+			return
 		}
 		log.Fatalf("Error parsing flags: %s", err)
 	}
@@ -88,8 +86,6 @@ func main() {
 			log.Printf("Sent (%d): %s", msg.ReplyToMessageID, msg.Text)
 		case <-exit:
 			log.Println("Shutting down")
-			bot.StopReceivingUpdates()
-			close(replies)
 			return
 		}
 	}
